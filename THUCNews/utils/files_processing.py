@@ -53,18 +53,19 @@ def split_train_val_list(data_list,labels_list,facror=0.6,shuffle=True):
     :param shuffle:
     :return:
     '''
+    sed = 100
     if shuffle:
-        random.seed(100)
+        random.seed(sed)
         random.shuffle(data_list)
-        random.seed(100)
+        random.seed(sed)
         random.shuffle(labels_list)
     split=int(len(labels_list)*facror)
     # 训练数据
-    train_data=data_list[:split]
-    train_label=labels_list[:split]
+    train_data = data_list[:split]
+    train_label = labels_list[:split]
     # 测数数据
-    val_data=data_list[split:]
-    val_label=labels_list[split:]
+    val_data = data_list[split:]
+    val_label = labels_list[split:]
 
     print("train_data:{},train_label:{}".format(len(train_data),len(train_label)))
     print("val_data  :{},val_label  :{}".format(len(val_data),len(val_label)))
@@ -102,6 +103,7 @@ def getFilePathList(file_dir):
         filePath_list.extend(part_filePath_list)
     return filePath_list
 
+#得到所有文件的路径
 def get_files_list(file_dir,postfix='ALL'):
     '''
     获得file_dir目录下，后缀名为postfix所有文件列表，包括子目录
@@ -145,8 +147,23 @@ def gen_files_labels(files_dir):
     print(pd.value_counts(label_list))
     return filePath_list,label_list
 
+def load_stopWords(path):
+    '''
+    加载停用词
+    :param path:
+    :return:
+    '''
+    stopwords = ['\n', '', ' ', '\n\n']
+    with open(path, "r", encoding='utf8') as f:
+        lines = f.readlines()
+        for line in lines:
+            stopwords.append(line.strip())
+    return stopwords
+
 def read_files_list_to_segment(files_list,max_sentence_length,padding_token='<PAN>',segment_type='word'):
-    content_list = segment.segment_files_list(files_list, stopwords=[], segment_type=segment_type)
+    stopwords_path = '../data/stop_words.txt'
+    stopwords = load_stopWords(stopwords_path)
+    content_list = segment.segment_files_list(files_list, stopwords=stopwords, segment_type=segment_type)
     content_list = segment.padding_sentences(content_list,
                                              padding_token=padding_token,
                                              padding_sentence_length=max_sentence_length)
@@ -229,7 +246,7 @@ def write_txt(file_name,content_list,mode="w"):
 
 def read_txt(file_name):
     content_list=[]
-    with open(file_name, 'r') as f:
+    with open(file_name, 'r', encoding='utf8') as f:
         lines = f.readlines()
         for line in lines:
             line = line.rstrip()

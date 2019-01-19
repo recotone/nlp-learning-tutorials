@@ -174,14 +174,14 @@ def train(train_dir,val_dir,labels_file,word2vec_path,batch_size,max_steps,log_s
 def main():
     # Data preprocess
     labels_file = 'data/THUCNews_labels.txt'
-    word2vec_path = "../word2vec/models/THUCNews_word2Vec/THUCNews_word2Vec_128.model"
+    word2vec_path = "F:\技术资料\舆情食材\THUCNews_word2Vec\THUCNews_word2Vec_128.model"
 
     max_steps = 100000  # 迭代次数
     batch_size = 128
 
     out_dir = "./models"  # 模型ckpt和summaries输出的目录
-    train_dir = './data/train_data'
-    val_dir = './data/val_data'
+    train_dir = 'F:\技术资料\舆情食材\THUCNews'
+    val_dir = 'F:\技术资料\舆情食材\THUCNews'
 
     train(train_dir=train_dir,
           val_dir=val_dir,

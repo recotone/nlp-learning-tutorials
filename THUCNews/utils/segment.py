@@ -26,7 +26,7 @@ def load_stopWords(path):
     :param path:
     :return:
     '''
-    stopwords = []
+    stopwords = ['\n', '', ' ', '\n\n']
     with open(path, "r", encoding='utf8') as f:
         lines = f.readlines()
         for line in lines:
@@ -77,7 +77,7 @@ def read_file_content(file,mode='r'):
     :param mode:
     :return: str
     '''
-    with open(file, mode=mode) as f:
+    with open(file, mode=mode,encoding='UTF-8') as f:
         lines = f.readlines()
         contents=[]
         for line in lines:
@@ -252,17 +252,17 @@ if __name__=='__main__':
     # user_path = '../data/user_dict.txt'
     # jieba.load_userdict(user_path)
 
-    # stopwords_path='data/stop_words.txt'
-    # stopwords=load_stopwords(stopwords_path)
-    stopwords=common_stopwords()
+    stopwords_path='../data/stop_words.txt'
+    stopwords=load_stopWords(stopwords_path)
+    stopwords.extend(common_stopwords())
 
     # file_dir='../data/source2'
-    file_dir='/home/ubuntu/project/tfTest/THUCNews/THUCNews'
+    file_dir='F:\技术资料\舆情食材\THUCNews'
 
-    segment_out_dir='../data/segment'
+    segment_out_dir='..\data\segment'
     files_list=files_processing.get_files_list(file_dir,postfix='*.txt')
 
     # segment_out_dir='data/segment_conbine.txt'
     # combine_files_content(files_list, segment_out_dir,stopwords)
-    batch_processing_files(files_list, segment_out_dir, batchSize=1000, stopwords=[])
+    batch_processing_files(files_list, segment_out_dir, batchSize=10000, stopwords=stopwords)
 
